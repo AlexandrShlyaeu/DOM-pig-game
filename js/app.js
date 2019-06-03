@@ -10,7 +10,8 @@ GAME RULES:
 */
 let scores, roundScore, activePlayer, isPlaying, previuosDiceValue;
 
-let diceDom = document.querySelector(".dice");
+let diceDom1 = document.querySelector(".dice");
+let diceDom2 = document.querySelector(".dice2");
 
 init();
 
@@ -29,7 +30,8 @@ function init() {
   document.querySelector(`.player-0-panel`).classList.remove("winner");
   document.querySelector(`.player-1-panel`).classList.remove("active");
   document.querySelector(`.player-1-panel`).classList.remove("winner");
-  diceDom.style.display = "none";
+  diceDom1.style.display = "none";
+  diceDom2.style.display = "none";
   previuosDiceValue = 0;
 }
 
@@ -38,7 +40,8 @@ function endOfGame(playerStatus) {
   document.querySelector(
     `#name-${activePlayer}`
   ).textContent = `${playerStatus}`;
-  diceDom.style.display = "none";
+  diceDom1.style.display = "none";
+  diceDom2.style.display = "none";
   document
     .querySelector(`.player-${activePlayer}-panel`)
     .classList.add("winner");
@@ -50,15 +53,18 @@ function endOfGame(playerStatus) {
 document.querySelector(".btn-roll").addEventListener("click", () => {
   if (isPlaying) {
     let dice = Math.floor(Math.random() * 6 + 1);
-    diceDom.style.display = "block";
-    diceDom.src = `./../img/dice-${dice}.png`;
+    let dice2 = Math.floor(Math.random() * 6 + 1);
+    diceDom1.style.display = "block";
+    diceDom1.src = `./../img/dice-${dice}.png`;
+    diceDom2.style.display = "block";
+    diceDom2.src = `./../img/dice-${dice2}.png`;
 
     if (dice === previuosDiceValue && dice == 6) {
       endOfGame("LOOSER!");
     }
 
-    if (dice !== 1) {
-      roundScore += dice;
+    if (dice !== 1 && dice2 !== 1) {
+      roundScore += dice + dice2;
       document.querySelector(
         `#current-${activePlayer}`
       ).textContent = roundScore;
@@ -74,7 +80,7 @@ document.querySelector(".btn-hold").addEventListener("click", () => {
     scores[activePlayer] += roundScore;
     document.querySelector(`#score-${activePlayer}`).textContent =
       scores[activePlayer];
-    if (scores[activePlayer] >= 20) {
+    if (scores[activePlayer] >= 100) {
       endOfGame("WINNER!");
     } else {
       nextPlayer();
@@ -89,7 +95,8 @@ function nextPlayer() {
   document.querySelector(`#current-1`).textContent = 0;
   document.querySelector(".player-0-panel").classList.toggle("active");
   document.querySelector(".player-1-panel").classList.toggle("active");
-  diceDom.style.display = "none";
+  diceDom1.style.display = "none";
+  diceDom2.style.display = "none";
 }
 
 document.querySelector(".btn-new").addEventListener("click", init);
